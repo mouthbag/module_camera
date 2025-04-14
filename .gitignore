@@ -1,0 +1,8 @@
+/log
+/logs
+nohup.out
+/raw.githubusercontent.com
+**/__pycache__
+**/.venv
+**/models
+**/.debugenv
