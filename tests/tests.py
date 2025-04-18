@@ -5,15 +5,17 @@ import time
 import paho
 import requests
 
+from camera.camera import CAMERA
+
 def __on_mqtt_connected(client, userdata, flags, rc):
     print("MQTT connected")
-    mqtt_client.subscribe(topic="camera")
+    #mqtt_client.subscribe(topic="camera")
 
 def __on_mqtt_disconnected(client, userdata, rc):
     print("MQTT client disconnected. Trying to reconnect.")
     
-    mqtt_client.connect(host="192.168.10.119",
-                                        port=1884)
+    #mqtt_client.connect(host="192.168.10.119",
+    #                                    port=1884)
 
 def __on_mqtt_message(client, userdata, message:paho.mqtt.client.MQTTMessage):
     
@@ -24,7 +26,19 @@ def __on_mqtt_message(client, userdata, message:paho.mqtt.client.MQTTMessage):
 
 if __name__=="__main__":
     
-    mqtt_client=paho.mqtt.client.Client()
+    camera=CAMERA(last_image_path="/home/todor/lastsnap.jpg",
+                  mqtt_host="192.168.0.119",
+                  mqtt_port=1884,
+                  mqtt_user="todor",
+                  mqtt_password="bla",
+                  image_topic="camera_images")
+    
+    camera.take_image()
+    
+    camera.send_last_image_to_mqtt()
+    
+    
+    """ mqtt_client=paho.mqtt.client.Client()
     
     mqtt_client.on_connect=__on_mqtt_connected
     mqtt_client.on_disconnect=__on_mqtt_disconnected
@@ -42,7 +56,7 @@ if __name__=="__main__":
     mqtt_client.loop_start()
     
     while True:
-        continue
+        continue """
     
     
     
