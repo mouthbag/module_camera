@@ -26,8 +26,8 @@ def __on_mqtt_message(client, userdata, message:paho.mqtt.client.MQTTMessage):
 
 if __name__=="__main__":
     
-    camera=CAMERA(last_image_path="/home/todor/lastsnap.jpg",
-                  mqtt_host="192.168.0.119",
+    camera=CAMERA(last_image_path="/home/todor/704-20250418151830-snapshot.jpg",
+                  mqtt_host="192.168.10.119",
                   mqtt_port=1884,
                   mqtt_user="todor",
                   mqtt_password="bla",
