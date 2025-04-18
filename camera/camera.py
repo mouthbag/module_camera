@@ -27,6 +27,11 @@ class CAMERA():
         self.__last_image_path=last_image_path
         self.__last_image_topic=image_topic
         
+        self.__mqtt_host=mqtt_host
+        self.__mqtt_port=mqtt_port
+        self.__mqtt_user=mqtt_user
+        self.__mqtt_password=mqtt_password
+        
         self.__mqtt_client:paho.mqtt.client.Client
         
         self.__connect_mqtt()
@@ -59,8 +64,7 @@ class CAMERA():
         
     def __on_mqtt_connected(self, client, userdata, flags, rc):
         self.__logger.info("MQTT client connected.")
-        self.__logger.debug("Subscribing to topic {}".format(self.__camera_topic))
-        self.__mqtt_client.subscribe(topic=self.__camera_topic)
+
     
     def __on_mqtt_disconnected(self, client, userdata, rc):
         self.__logger.error("MQTT client disconnected. Trying to reconnect.")
