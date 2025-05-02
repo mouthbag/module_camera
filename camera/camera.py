@@ -5,6 +5,7 @@ import paho.mqtt.client
 import requests
 
 from logging import Logger, StreamHandler, Formatter, getLogger
+from subprocess import run
 
 from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT
 
@@ -90,7 +91,12 @@ class CAMERA():
             self.__logger.error("Could not open camera.")
     
     def take_image(self,path:str=None):
-        response=requests.get("http://localhost:8080/0/action/snapshot")
+        
+        try:
+            response=requests.get("http://localhost:8080/0/action/snapshot")
+        except Exception as ex:
+            self.__logger.error("Error when connecting to motion: {}".format(repr(ex)))
+            run(['sudo', 'motion'], check=True)
         
     def send_last_image_to_mqtt(self):
         
