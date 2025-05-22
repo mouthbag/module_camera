@@ -11,6 +11,13 @@
             "request": "launch",
             "program": "tests/tests.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "ELP Test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "tests/elptests.py",
+            "console": "integratedTerminal"
         }
     ]
 }
