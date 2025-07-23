@@ -6,3 +6,4 @@ nohup.out
 **/.venv
 **/models
 **/.debugenv
+*.jpg
