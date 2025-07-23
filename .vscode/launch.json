@@ -19,6 +19,13 @@
             "request": "launch",
             "program": "tests/elptests.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Webcam Test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "tests/webcamtest.py",
+            "console": "integratedTerminal"
         }
     ]
 }
