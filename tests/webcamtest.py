@@ -5,13 +5,15 @@ from camera.webcam import WEBCAM
 
 if __name__=='__main__':
     
-    address='http://100.99.128.36:8081/'
-    sleep_time=20
+    address='http://100.83.37.8:8081/'
+    sleep_time=10
     
-    webcam=WEBCAM(webcam_address=address)
+    webcam=WEBCAM(webcam_address=address,
+                  display_frame=True)
     
     webcam.start()
     
     time.sleep(sleep_time)
     
-    webcam.get_closest_images(time.time()-3)    
+    webcam.save_closest_images(time_stamp=time.time()-3,
+                               output_path="/home/todor/pferde/module_camera")    
