@@ -23,6 +23,8 @@ class WEBCAM(Thread):
         else:
             self.__logger=logger
         
+        self.__logger.info("Starting up webcam module. Camera address: {}".format(webcam_address))
+        
         self.__webcam_address=webcam_address
         
         self.__lock=Lock()
@@ -83,13 +85,18 @@ class WEBCAM(Thread):
     def save_closest_images(self,
                             time_stamp:float,
                             output_path:str,
-                            image_count:int=5):
+                            image_count:int=5,
+                            time_offset:int=0):
         try:
+            self.__logger.info("Saving images. Destination: {}".format(output_path))
             with self.__lock:
-                sorted_buffer=sorted((((ts - time_stamp), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+                sorted_buffer=sorted((((ts - time_stamp + time_offset), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
                 
-            sorted_buffer=[item for item in sorted_buffer if item[0]>-2]
-                
+            sorted_buffer=[item for item in sorted_buffer if item[0] > 0]
+            
+            if len(sorted_buffer)==0:
+                self.__logger.warning("No images extracted for timestamp {} and offset {}".format(time_stamp,time_offset))
+            
             for frame in sorted_buffer[0:image_count]:
                 timestamp=time()
                 frame_name=os.path.join(output_path,f"{timestamp:.3f}.jpg")
