@@ -91,7 +91,8 @@ class WEBCAM(Thread):
             sorted_buffer=[item for item in sorted_buffer if item[0]>-2]
                 
             for frame in sorted_buffer[0:image_count]:
-                frame_name=os.path.join(output_path,str(time())+".jpg")
+                timestamp=time()
+                frame_name=os.path.join(output_path,f"{timestamp:.3f}.jpg")
                 cv2.imwrite(filename=frame_name,img=frame[1])
                 
                 
