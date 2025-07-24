@@ -86,11 +86,15 @@ class WEBCAM(Thread):
                             image_count:int=5):
         try:
             with self.__lock:
-                sorted_buffer=sorted(((abs(ts - time_stamp), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+                sorted_buffer=sorted((((ts - time_stamp), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+                
+            sorted_buffer=[item for item in sorted_buffer if item[0]>0]
                 
             for frame in sorted_buffer[0:image_count]:
                 frame_name=os.path.join(output_path,str(time())+".jpg")
                 cv2.imwrite(filename=frame_name,img=frame[1])
+                
+                
         except Exception as ex:
             self.__logger.error("Error when saving snapshots: {}".format(repr(ex)))
         
