@@ -67,7 +67,7 @@ class WEBCAM(Thread):
                 self.__image_buffer.append((time(),frame))
             
             if self.__display_frame==True:
-                cv2.imshow("Heudach", frame)
+                cv2.imshow(self.__webcam_address, frame)
             
             cv2.waitKey(1)
             
