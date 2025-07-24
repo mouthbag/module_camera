@@ -88,7 +88,7 @@ class WEBCAM(Thread):
             with self.__lock:
                 sorted_buffer=sorted((((ts - time_stamp), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
                 
-            sorted_buffer=[item for item in sorted_buffer if item[0]>0]
+            sorted_buffer=[item for item in sorted_buffer if item[0]>-2]
                 
             for frame in sorted_buffer[0:image_count]:
                 frame_name=os.path.join(output_path,str(time())+".jpg")
