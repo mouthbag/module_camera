@@ -90,7 +90,7 @@ class WEBCAM(Thread):
         try:
             self.__logger.info("Saving images. Destination: {}".format(output_path))
             with self.__lock:
-                sorted_buffer=sorted((((ts - time_stamp + time_offset), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+                sorted_buffer=sorted((((ts - (time_stamp + time_offset)), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
                 
             sorted_buffer=[item for item in sorted_buffer if item[0] > 0]
             
