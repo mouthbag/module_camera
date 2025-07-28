@@ -75,10 +75,18 @@ class WEBCAM(Thread):
             
     def get_closest_images(self,
                            time_stamp:float,
-                           image_count:int=5):
+                           image_count:int=5,
+                           time_offset:int=0):
         
-        with self.__lock:
-            sorted_buffer=sorted(((abs(ts - time_stamp), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+        try:
+            self.__logger.info("Return webcam images.")
+            with self.__lock:
+                sorted_buffer=sorted((((ts - (time_stamp + time_offset)), frame) for ts, frame in self.__image_buffer), key=lambda x: x[0])
+                
+            sorted_buffer=[item for item in sorted_buffer if item[0] > 0]
+            
+        except Exception as ex:
+            self.__logger.error("Error on closest image retrieval: {}".format(repr(ex)))
             
         return sorted_buffer[0:image_count]
     
