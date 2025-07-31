@@ -61,6 +61,8 @@ class WEBCAM(Thread):
             
             ret, frame = self.__camera.read()
             
+            frame=cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+            
             if not ret:
                 self.__logger.warning("Could not read frame.")
                 continue
