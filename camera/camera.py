@@ -106,6 +106,14 @@ class CAMERA():
             
             self.__mqtt_client.publish(topic=self.__last_image_topic,
                                        payload=image)
+            
+    def send_image_to_mqtt(self, image_file):
+        
+            _, buffer=cv2.imencode(".jpg",image_file)
+            
+            
+            self.__mqtt_client.publish(topic=self.__last_image_topic,
+                                       payload=buffer.tobytes())
         
         
         
