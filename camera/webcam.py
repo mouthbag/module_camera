@@ -110,7 +110,8 @@ class WEBCAM(Thread):
             for frame in sorted_buffer[0:image_count]:
                 timestamp=time()
                 frame_name=os.path.join(output_path,f"{timestamp:.3f}.jpg")
-                cv2.imwrite(filename=frame_name,img=frame[1])
+                img=cv2.cvtColor(frame[1],cv2.COLOR_RGB2BGR)
+                cv2.imwrite(filename=frame_name,img=img)
                 
                 
         except Exception as ex:
