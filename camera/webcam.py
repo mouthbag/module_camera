@@ -57,7 +57,9 @@ class WEBCAM(Thread):
         while(True):
             
             if self.__camera.isOpened()==False:
+                self.__logger.warning("Reopening webcam connection.")
                 self.__camera=cv2.VideoCapture(self.__webcam_address)
+                sleep(0.5)
             
             ret, frame = self.__camera.read()
             
@@ -65,6 +67,10 @@ class WEBCAM(Thread):
             
             if not ret:
                 self.__logger.warning("Could not read frame.")
+                if self.__camera is not None:
+                    self.__camera.release()
+                    self.__camera=None
+                    self.__camera=cv2.VideoCapture(self.__webcam_address)
                 continue
             
             with self.__lock:
@@ -73,7 +79,7 @@ class WEBCAM(Thread):
             if self.__display_frame==True:
                 cv2.imshow(self.__webcam_address, frame)
             
-            cv2.waitKey(1)
+            sleep(0.1)
             
     def get_closest_images(self,
                            time_stamp:float,
