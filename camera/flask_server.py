@@ -5,15 +5,17 @@ import base64
 
 from logging import Logger, StreamHandler, Formatter, getLogger
 
-from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT
+from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT, DEFAULTFLASKPORT, DEFAULTFLASKHOST
 
 from .webcam import WEBCAM
 
 class FLASKSERVER(Thread):
-    def __init__(self, webcam:WEBCAM,
-                 host="0.0.0.0",
-                 port=2003,
+    def __init__(self,
+                 webcam:WEBCAM,
+                 host=DEFAULTFLASKHOST,
+                 port=DEFAULTFLASKPORT,
                  logger:Logger=None):
+        
         super().__init__(daemon=True)
         
         if logger is None:
