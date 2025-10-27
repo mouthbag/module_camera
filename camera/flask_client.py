@@ -4,22 +4,24 @@ import cv2
 import numpy as np
 import time
 
-from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT
+from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT, DEFAULTFLASKPORT
 from logging import Logger, StreamHandler, Formatter, getLogger
 
 class FLASTIMAGECLIENT:
-    def __init__(self, server_ip, port=2003):
+    def __init__(self,
+                 server_ip,
+                 port=DEFAULTFLASKPORT,
+                 logger:Logger=None):
+        
+        if logger is None:
+            self.__logger=self.__create_logger()
+        else:
+            self.__logger=logger
+        
         self.base_url = f"http://{server_ip}:{port}"
 
-    def get_health(self):
-        try:
-            r = requests.get(f"{self.base_url}/health", timeout=1)
-            return r.status_code == 200
-        except requests.RequestException:
-            return False
-
     def __create_logger(self)->Logger:
-        logger=getLogger(name="CAMERA")
+        logger=getLogger(name="FLASKCLIENT")
         logger.setLevel(DEFAULTLOGLEVEL)
         loggingFormat=Formatter(LOGGINGFORMAT)
         loggingStream=StreamHandler()
@@ -28,9 +30,17 @@ class FLASTIMAGECLIENT:
         logger.addHandler(loggingStream)
         return logger
 
-    def get_images(self, timestamp=None):
-        if timestamp is None:
-            timestamp = time.time()
+    def get_health(self):
+        try:
+            r = requests.get(f"{self.base_url}/health", timeout=1)
+            return r.status_code == 200
+        except requests.RequestException:
+            return False
+
+    def get_images(self,
+                   timestamp,
+                   time_offset=0,
+                   image_count=5):
         
         try:
             url = f"{self.base_url}/get_images?timestamp={timestamp}"
