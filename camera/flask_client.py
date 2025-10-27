@@ -7,7 +7,7 @@ import time
 from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT, DEFAULTFLASKPORT
 from logging import Logger, StreamHandler, Formatter, getLogger
 
-class FLASTIMAGECLIENT:
+class FLASKIMAGECLIENT:
     def __init__(self,
                  server_ip,
                  port=DEFAULTFLASKPORT,
