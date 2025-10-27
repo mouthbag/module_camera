@@ -3,6 +3,8 @@ import base64
 import cv2
 import numpy as np
 import time
+from PIL import Image
+from io import BytesIO
 
 from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT, DEFAULTFLASKPORT
 from logging import Logger, StreamHandler, Formatter, getLogger
@@ -51,11 +53,14 @@ class FLASKIMAGECLIENT:
 
             images = []
             for i, entry in enumerate(data):
-                delta = entry["timestamp_delta"]
+                #delta = entry["timestamp_delta"]
                 b64 = entry["image"]
                 img_bytes = base64.b64decode(b64)
-                img_array = np.frombuffer(img_bytes, dtype=np.uint8)
-                img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                #img_array = np.frombuffer(img_bytes, dtype=np.uint8)
+                #img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                
+                img=Image.open(BytesIO(img_bytes))
+                
                 images.append(img)
             return images
 
