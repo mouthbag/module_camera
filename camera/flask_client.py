@@ -56,7 +56,7 @@ class FLASTIMAGECLIENT:
                 img_bytes = base64.b64decode(b64)
                 img_array = np.frombuffer(img_bytes, dtype=np.uint8)
                 img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                images.append((delta, img))
+                images.append(img)
             return images
 
         except Exception as e:
