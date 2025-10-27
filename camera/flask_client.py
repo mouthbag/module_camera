@@ -4,8 +4,11 @@ import cv2
 import numpy as np
 import time
 
-class FlaskImageClient:
-    def __init__(self, server_ip, port=8000):
+from camera.moduledefines import DEFAULTLOGLEVEL, LOGGINGFORMAT
+from logging import Logger, StreamHandler, Formatter, getLogger
+
+class FLASTIMAGECLIENT:
+    def __init__(self, server_ip, port=2003):
         self.base_url = f"http://{server_ip}:{port}"
 
     def get_health(self):
@@ -14,6 +17,16 @@ class FlaskImageClient:
             return r.status_code == 200
         except requests.RequestException:
             return False
+
+    def __create_logger(self)->Logger:
+        logger=getLogger(name="CAMERA")
+        logger.setLevel(DEFAULTLOGLEVEL)
+        loggingFormat=Formatter(LOGGINGFORMAT)
+        loggingStream=StreamHandler()
+        loggingStream.setFormatter(loggingFormat)
+        loggingStream.setLevel(DEFAULTLOGLEVEL)
+        logger.addHandler(loggingStream)
+        return logger
 
     def get_images(self, timestamp=None):
         if timestamp is None:
@@ -39,17 +52,3 @@ class FlaskImageClient:
             print(f"[CLIENT ERROR] {e}")
             return []
 
-# Usage example
-if __name__ == "__main__":
-    client = FlaskImageClient("192.168.1.42")
-
-    if client.get_health():
-        print("Server is alive!")
-        imgs = client.get_images()
-        for i, (delta, img) in enumerate(imgs):
-            print(f"Image {i}: Δt = {delta:.3f} sec")
-            cv2.imshow(f"Frame {i}", img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-    else:
-        print("Server is down. Blame the moon Nazis.")
