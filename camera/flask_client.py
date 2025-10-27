@@ -18,7 +18,8 @@ class FLASTIMAGECLIENT:
         else:
             self.__logger=logger
         
-        self.base_url = f"http://{server_ip}:{port}"
+        self.__base_url = f"http://{server_ip}:{port}"
+        self.__logger.info(f"Server url: {self.__base_url}")
 
     def __create_logger(self)->Logger:
         logger=getLogger(name="FLASKCLIENT")
@@ -32,7 +33,7 @@ class FLASTIMAGECLIENT:
 
     def get_health(self):
         try:
-            r = requests.get(f"{self.base_url}/health", timeout=1)
+            r = requests.get(f"{self.__base_url}/health", timeout=1)
             return r.status_code == 200
         except requests.RequestException:
             return False
@@ -43,7 +44,7 @@ class FLASTIMAGECLIENT:
                    image_count=5):
         
         try:
-            url = f"{self.base_url}/get_images?timestamp={timestamp}"
+            url = f"{self.__base_url}/get_images?timestamp={timestamp}&timeoffset={time_offset}&imagecount={image_count}"
             r = requests.get(url, timeout=5)
             r.raise_for_status()
             data = r.json()
@@ -59,6 +60,5 @@ class FLASTIMAGECLIENT:
             return images
 
         except Exception as e:
-            print(f"[CLIENT ERROR] {e}")
+            self.__logger.error(f"{repr(e)}")
             return []
-
