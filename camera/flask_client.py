@@ -23,7 +23,7 @@ class FLASKIMAGECLIENT:
             self.__logger=logger
         
         self.__base_url = f"http://{server_ip}:{port}"
-        self.__logger.info(f"Server url: {self.__base_url}")
+        self.__logger.info(f"Server url: {self.__base_url}:{port}")
 
     def __create_logger(self)->Logger:
         logger=getLogger(name="FLASKCLIENT")
