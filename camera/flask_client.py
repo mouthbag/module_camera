@@ -13,6 +13,8 @@ class FLASKIMAGECLIENT:
     def __init__(self,
                  server_ip,
                  port=DEFAULTFLASKPORT,
+                 default_time_offset=0,
+                 default_image_count=5,
                  logger:Logger=None):
         
         if logger is None:
