@@ -22,6 +22,9 @@ class FLASKIMAGECLIENT:
         else:
             self.__logger=logger
         
+        self.__default_time_offset=default_time_offset
+        self.__default_image_count=default_image_count
+        
         self.__base_url = f"http://{server_ip}:{port}"
         self.__logger.info(f"Server url: {self.__base_url}:{port}")
 
@@ -44,8 +47,13 @@ class FLASKIMAGECLIENT:
 
     def get_images(self,
                    timestamp,
-                   time_offset=0,
-                   image_count=5):
+                   time_offset=None,
+                   image_count=None):
+        
+        if time_offset is None:
+            time_offset=self.__default_time_offset
+        if image_count is None:
+            image_count=self.__default_image_count
         
         try:
             url = f"{self.__base_url}/get_images?timestamp={timestamp}&timeoffset={time_offset}&imagecount={image_count}"
